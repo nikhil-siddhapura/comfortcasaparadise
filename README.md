@@ -7,15 +7,19 @@
 ## ⚡ Quick Start (3 Steps)
 
 ### Step 1 — Setup Database
+
 ```bash
 mysql -u root -p < resort_db.sql
 ```
+
 Then open `backend/.env` and set your MySQL password:
+
 ```
 DB_PASSWORD=your_actual_password
 ```
 
 ### Step 2 — Run Backend
+
 ```bash
 cd backend
 python -m venv venv
@@ -28,18 +32,22 @@ source venv/bin/activate
 pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
+
 ✅ API running at: http://localhost:8000
 📄 Swagger docs: http://localhost:8000/docs
 
 ### Step 3 — Open Frontend
+
 Open `frontend/index.html` with **VS Code Live Server**
-*(Right-click → Open with Live Server)*
+_(Right-click → Open with Live Server)_
 
 Or use Python:
+
 ```bash
 cd frontend
 python -m http.server 5500
 ```
+
 ✅ Frontend at: http://localhost:5500
 
 ---
@@ -47,7 +55,7 @@ python -m http.server 5500
 ## 🔐 Login Credentials
 
 | Role  | Username/Email | Password |
-|-------|----------------|----------|
+| ----- | -------------- | -------- |
 | Admin | admin          | admin123 |
 | User  | Register yours | 6+ chars |
 
@@ -56,6 +64,7 @@ python -m http.server 5500
 ## ✅ Features Checklist
 
 ### Admin
+
 - [x] Login with username/password
 - [x] Dashboard with stats
 - [x] Category — Add, Edit (with image), Update, Delete
@@ -66,6 +75,7 @@ python -m http.server 5500
 - [x] Messages — View contact messages, Reply to users
 
 ### User
+
 - [x] Register, Login, Logout
 - [x] Forgot Password (token-based reset)
 - [x] Edit profile, upload avatar
@@ -76,6 +86,7 @@ python -m http.server 5500
 - [x] Send contact message to admin
 
 ### Visitor
+
 - [x] View homepage with categories and products
 - [x] Filter rooms by category
 - [x] View services
@@ -152,6 +163,7 @@ resort_management_system/
 ## 🖼️ Image Upload
 
 Images can be uploaded when:
+
 - **Adding** a category / product / service
 - **Editing** a category / product / service (separate image field)
 - **Profile** avatar upload
@@ -162,23 +174,23 @@ Images are stored in `backend/uploads/` and served at `http://localhost:8000/upl
 
 ## 🛠️ Common Errors
 
-| Error | Fix |
-|-------|-----|
-| `Access denied` MySQL | Update `DB_PASSWORD` in `.env` |
-| `Module not found` | Run `pip install -r requirements.txt` |
-| CORS error in browser | Make sure backend runs on port 8000 |
-| `uvicorn not found` | Activate virtual environment first |
-| Images not showing | Make sure backend is running |
-| `422 Unprocessable Entity` | Check Swagger docs at `/docs` |
+| Error                      | Fix                                   |
+| -------------------------- | ------------------------------------- |
+| `Access denied` MySQL      | Update `DB_PASSWORD` in `.env`        |
+| `Module not found`         | Run `pip install -r requirements.txt` |
+| CORS error in browser      | Make sure backend runs on port 8000   |
+| `uvicorn not found`        | Activate virtual environment first    |
+| Images not showing         | Make sure backend is running          |
+| `422 Unprocessable Entity` | Check Swagger docs at `/docs`         |
 
 ---
 
 ## 🌐 All URLs
 
-| URL | Description |
-|-----|-------------|
-| http://localhost:8000 | Backend health check |
-| http://localhost:8000/docs | Swagger API explorer |
-| http://localhost:5500/index.html | Homepage |
-| http://localhost:5500/login.html | Login page |
-| http://localhost:5500/admin/dashboard.html | Admin panel |
+| URL                                        | Description          |
+| ------------------------------------------ | -------------------- |
+| http://localhost:8000                      | Backend health check |
+| http://localhost:8000/docs                 | Swagger API explorer |
+| http://localhost:5500/index.html           | Homepage             |
+| http://localhost:5500/login.html           | Login page           |
+| http://localhost:5500/admin/dashboard.html | Admin panel          |
