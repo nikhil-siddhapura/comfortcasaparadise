@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900">
+  <!-- Sky gradient -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a3a5c"/>
+      <stop offset="100%" stop-color="#2e7fb8"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a6fa8"/>
+      <stop offset="100%" stop-color="#0d4f7a"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c9a96e"/>
+      <stop offset="100%" stop-color="#a07840"/>
+    </linearGradient>
+    <linearGradient id="resort" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0e6d3"/>
+      <stop offset="100%" stop-color="#d4c4a8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1440" height="900" fill="url(#sky)"/>
+
+  <!-- Stars/dots -->
+  <circle cx="100" cy="80" r="2" fill="white" opacity="0.6"/>
+  <circle cx="300" cy="50" r="1.5" fill="white" opacity="0.5"/>
+  <circle cx="600" cy="90" r="2" fill="white" opacity="0.7"/>
+  <circle cx="900" cy="40" r="1.5" fill="white" opacity="0.5"/>
+  <circle cx="1200" cy="70" r="2" fill="white" opacity="0.6"/>
+  <circle cx="1350" cy="100" r="1.5" fill="white" opacity="0.5"/>
+  <circle cx="450" cy="30" r="1" fill="white" opacity="0.4"/>
+  <circle cx="750" cy="60" r="1" fill="white" opacity="0.4"/>
+
+  <!-- Moon -->
+  <circle cx="1300" cy="100" r="50" fill="#f5e642" opacity="0.25"/>
+  <circle cx="1300" cy="100" r="38" fill="#f5e642" opacity="0.3"/>
+
+  <!-- Sea -->
+  <rect y="540" width="1440" height="360" fill="url(#sea)"/>
+
+  <!-- Sea waves -->
+  <path d="M0 560 Q180 540 360 560 Q540 580 720 560 Q900 540 1080 560 Q1260 580 1440 560 L1440 900 L0 900Z" fill="#1565a0" opacity="0.5"/>
+  <path d="M0 600 Q200 580 400 600 Q600 620 800 600 Q1000 580 1200 600 Q1350 615 1440 600 L1440 900 L0 900Z" fill="#0d4c7a" opacity="0.6"/>
+
+  <!-- Beach/sand -->
+  <ellipse cx="720" cy="800" rx="900" ry="200" fill="url(#sand)"/>
+  <path d="M0 700 Q360 660 720 680 Q1080 700 1440 670 L1440 900 L0 900Z" fill="#c9a96e"/>
+
+  <!-- Main Resort Building - Center -->
+  <rect x="520" y="290" width="400" height="300" fill="url(#resort)" rx="4"/>
+  <!-- Building windows -->
+  <rect x="540" y="320" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <rect x="600" y="320" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <rect x="660" y="320" width="40" height="35" fill="#f5e09a" rx="2" opacity="0.9"/>
+  <rect x="720" y="320" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <rect x="780" y="320" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <rect x="840" y="320" width="40" height="35" fill="#f5e09a" rx="2" opacity="0.9"/>
+  <!-- Row 2 windows -->
+  <rect x="540" y="375" width="40" height="35" fill="#f5e09a" rx="2" opacity="0.9"/>
+  <rect x="600" y="375" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <rect x="660" y="375" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <rect x="720" y="375" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <rect x="780" y="375" width="40" height="35" fill="#f5e09a" rx="2" opacity="0.9"/>
+  <rect x="840" y="375" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <!-- Row 3 windows -->
+  <rect x="540" y="430" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <rect x="600" y="430" width="40" height="35" fill="#f5e09a" rx="2" opacity="0.9"/>
+  <rect x="660" y="430" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <rect x="720" y="430" width="40" height="35" fill="#f5e09a" rx="2" opacity="0.9"/>
+  <rect x="780" y="430" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <rect x="840" y="430" width="40" height="35" fill="#aad4f5" rx="2" opacity="0.8"/>
+  <!-- Roof -->
+  <polygon points="500,290 920,290 900,255 520,255" fill="#8b6914"/>
+  <polygon points="520,255 900,255 720,210" fill="#a07820"/>
+  <!-- Entrance -->
+  <rect x="680" y="500" width="80" height="90" fill="#7a5c2e" rx="3"/>
+  <rect x="700" y="490" width="40" height="15" fill="#d4ac0d" rx="2"/>
+  <!-- Pillars -->
+  <rect x="660" y="480" width="15" height="110" fill="#d4c4a8"/>
+  <rect x="765" y="480" width="15" height="110" fill="#d4c4a8"/>
+
+  <!-- Left Wing -->
+  <rect x="280" y="370" width="260" height="220" fill="#e8dcc8" rx="3"/>
+  <rect x="300" y="390" width="35" height="30" fill="#aad4f5" rx="2" opacity="0.7"/>
+  <rect x="350" y="390" width="35" height="30" fill="#f5e09a" rx="2" opacity="0.8"/>
+  <rect x="400" y="390" width="35" height="30" fill="#aad4f5" rx="2" opacity="0.7"/>
+  <rect x="300" y="435" width="35" height="30" fill="#f5e09a" rx="2" opacity="0.8"/>
+  <rect x="350" y="435" width="35" height="30" fill="#aad4f5" rx="2" opacity="0.7"/>
+  <rect x="400" y="435" width="35" height="30" fill="#aad4f5" rx="2" opacity="0.7"/>
+  <polygon points="260,370 560,370 540,340 280,340" fill="#7a5c1e"/>
+
+  <!-- Right Wing -->
+  <rect x="900" y="370" width="260" height="220" fill="#e8dcc8" rx="3"/>
+  <rect x="920" y="390" width="35" height="30" fill="#aad4f5" rx="2" opacity="0.7"/>
+  <rect x="970" y="390" width="35" height="30" fill="#f5e09a" rx="2" opacity="0.8"/>
+  <rect x="1020" y="390" width="35" height="30" fill="#aad4f5" rx="2" opacity="0.7"/>
+  <rect x="920" y="435" width="35" height="30" fill="#aad4f5" rx="2" opacity="0.7"/>
+  <rect x="970" y="435" width="35" height="30" fill="#f5e09a" rx="2" opacity="0.8"/>
+  <rect x="1020" y="435" width="35" height="30" fill="#aad4f5" rx="2" opacity="0.7"/>
+  <polygon points="880,370 1180,370 1160,340 900,340" fill="#7a5c1e"/>
+
+  <!-- Swimming Pool -->
+  <ellipse cx="720" cy="640" rx="160" ry="50" fill="#1a9aba" opacity="0.85"/>
+  <ellipse cx="720" cy="640" rx="145" ry="40" fill="#22b8d4" opacity="0.6"/>
+
+  <!-- Palm Trees left -->
+  <rect x="170" y="500" width="12" height="180" fill="#5d4037" rx="6"/>
+  <ellipse cx="176" cy="500" rx="55" ry="30" fill="#2e7d32" opacity="0.9" transform="rotate(-20,176,500)"/>
+  <ellipse cx="176" cy="500" rx="55" ry="28" fill="#388e3c" opacity="0.8" transform="rotate(10,176,500)"/>
+  <ellipse cx="176" cy="500" rx="50" ry="25" fill="#43a047" opacity="0.7" transform="rotate(-45,176,500)"/>
+
+  <!-- Palm Trees right -->
+  <rect x="1260" y="480" width="12" height="200" fill="#5d4037" rx="6"/>
+  <ellipse cx="1266" cy="480" rx="55" ry="30" fill="#2e7d32" opacity="0.9" transform="rotate(20,1266,480)"/>
+  <ellipse cx="1266" cy="480" rx="55" ry="28" fill="#388e3c" opacity="0.8" transform="rotate(-10,1266,480)"/>
+  <ellipse cx="1266" cy="480" rx="50" ry="25" fill="#43a047" opacity="0.7" transform="rotate(45,1266,480)"/>
+
+  <!-- Umbrellas on beach -->
+  <polygon points="380,670 440,620 500,670" fill="#e53935" opacity="0.9"/>
+  <rect x="437" y="620" width="6" height="70" fill="#795548"/>
+  <polygon points="900,665 960,615 1020,665" fill="#1565c0" opacity="0.9"/>
+  <rect x="957" y="615" width="6" height="70" fill="#795548"/>
+  <polygon points="1100,655 1150,610 1200,655" fill="#f57f17" opacity="0.9"/>
+  <rect x="1147" y="610" width="6" height="65" fill="#795548"/>
+
+  <!-- Flowers / garden -->
+  <circle cx="500" cy="595" r="8" fill="#e91e63" opacity="0.8"/>
+  <circle cx="520" cy="590" r="6" fill="#ff5722" opacity="0.7"/>
+  <circle cx="540" cy="598" r="7" fill="#e91e63" opacity="0.8"/>
+  <circle cx="900" cy="595" r="8" fill="#ff5722" opacity="0.8"/>
+  <circle cx="920" cy="590" r="6" fill="#e91e63" opacity="0.7"/>
+  <circle cx="940" cy="598" r="7" fill="#ff5722" opacity="0.8"/>
+</svg>

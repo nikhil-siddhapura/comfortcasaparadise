@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Admin Dashboard — Royal Resort</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/admin.css"/>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🏨 <span>Royal Resort</span></div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="active"><span class="icon">📊</span><span>Dashboard</span></a>
+      <a href="categories.html"><span class="icon">🏷️</span><span>Categories</span></a>
+      <a href="products.html"><span class="icon">🛏️</span><span>Products</span></a>
+      <a href="bookings.html"><span class="icon">📅</span><span>Bookings</span></a>
+      <a href="users.html"><span class="icon">👥</span><span>Users</span></a>
+      <a href="contacts.html"><span class="icon">✉️</span><span>Messages</span></a>
+      <a href="services.html"><span class="icon">✨</span><span>Services</span></a>
+    </nav>
+    <div class="sidebar-footer"><a href="../login.html" onclick="clearAuth()"><span class="icon">🚪</span><span>Logout</span></a></div>
+  </aside>
+  <main class="admin-main">
+    <div class="admin-topbar"><h1>📊 Dashboard Overview</h1><div class="admin-user">👤 Admin</div></div>
+    <div class="admin-content">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon blue">👥</div><div class="stat-info"><h3 id="sUsers">—</h3><p>Total Users</p></div></div>
+        <div class="stat-card"><div class="stat-icon green">📅</div><div class="stat-info"><h3 id="sBookings">—</h3><p>Total Bookings</p></div></div>
+        <div class="stat-card"><div class="stat-icon gold">🛏️</div><div class="stat-info"><h3 id="sProducts">—</h3><p>Products</p></div></div>
+        <div class="stat-card"><div class="stat-icon red">✉️</div><div class="stat-info"><h3 id="sMessages">—</h3><p>Unread Messages</p></div></div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-header"><h3>Recent Bookings</h3><a href="bookings.html" class="btn btn-sm btn-outline">View All</a></div>
+        <div class="admin-card-body"><div id="recentBookings"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../js/api.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", async () => {
+  if (!isAdmin()) { window.location.href = "../login.html"; return; }
+  try {
+    const [users, bookings, products, contacts] = await Promise.all([
+      UserAPI.getAllUsers(), BookingAPI.allBookings(), ProductAPI.getAllAdmin(), ContactAPI.getAll()
+    ]);
+    document.getElementById("sUsers").textContent    = users.length;
+    document.getElementById("sBookings").textContent = bookings.length;
+    document.getElementById("sProducts").textContent = products.length;
+    document.getElementById("sMessages").textContent = contacts.filter(c => !c.is_read).length;
+    const recent = bookings.slice(0, 5);
+    document.getElementById("recentBookings").innerHTML = recent.length ? `
+      <div class="table-wrap"><table>
+        <thead><tr><th>ID</th><th>User</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Total</th><th>Status</th></tr></thead>
+        <tbody>${recent.map(b => `
+          <tr>
+            <td>#${b.id}</td><td>#${b.user_id}</td><td>#${b.product_id}</td>
+            <td>${formatDate(b.check_in)}</td><td>${formatDate(b.check_out)}</td>
+            <td>${formatCurrency(b.total_price)}</td>
+            <td><span class="badge badge-${b.status}">${b.status}</span></td>
+          </tr>`).join("")}
+        </tbody></table></div>` : `<p style="color:var(--muted)">No bookings yet.</p>`;
+  } catch (err) { console.error(err); }
+});
+</script>
+</body>
+</html>

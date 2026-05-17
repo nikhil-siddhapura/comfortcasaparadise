@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile — Royal Resort</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<nav class="navbar">
+  <div class="logo">Royal<span>Resort</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="booking.html">My Bookings</a></li>
+    <li><a href="#" onclick="clearAuth();window.location.href='index.html'">Logout</a></li>
+  </ul>
+</nav>
+<div class="container" style="max-width:600px;padding:40px 20px">
+  <h2 style="color:var(--primary);margin-bottom:25px">👤 My Profile</h2>
+  <div id="profileAlert"></div>
+  <div style="background:white;padding:35px;border-radius:var(--radius);box-shadow:var(--shadow)">
+    <div class="text-center mb-2">
+      <img id="avatarImg" src="" alt="Profile" style="width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid var(--primary);display:none"/>
+      <div id="avatarPlaceholder" style="width:110px;height:110px;border-radius:50%;background:var(--primary);color:white;font-size:2.5rem;display:flex;align-items:center;justify-content:center;margin:0 auto">👤</div>
+      <div class="mt-1">
+        <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar()"/>
+        <button class="btn btn-outline btn-sm" onclick="document.getElementById('avatarInput').click()">📷 Change Photo</button>
+      </div>
+    </div>
+    <div class="form-group"><label>Full Name</label><input type="text" class="form-control" id="profName"/></div>
+    <div class="form-group"><label>Email (read-only)</label><input type="email" class="form-control" id="profEmail" readonly style="background:#f8f9fa;color:var(--muted)"/></div>
+    <div class="form-group"><label>Phone</label><input type="tel" class="form-control" id="profPhone" placeholder="+91 98765 43210"/></div>
+    <div class="form-group"><label>Bio</label><textarea class="form-control" id="profBio" rows="3" placeholder="Tell us about yourself..."></textarea></div>
+    <button class="btn btn-primary btn-block" onclick="saveProfile()">💾 Save Changes</button>
+  </div>
+</div>
+<script src="js/api.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", async () => {
+  if (!isLoggedIn()) { window.location.href = "login.html"; return; }
+  try {
+    const user = await UserAPI.getMe();
+    document.getElementById("profName").value  = user.full_name || "";
+    document.getElementById("profEmail").value = user.email     || "";
+    document.getElementById("profPhone").value = user.phone     || "";
+    document.getElementById("profBio").value   = user.bio       || "";
+    if (user.profile_image) {
+      const img = document.getElementById("avatarImg");
+      img.src = imageUrl(user.profile_image);
+      img.style.display = "block";
+      document.getElementById("avatarPlaceholder").style.display = "none";
+    }
+  } catch (err) { showAlert("profileAlert", err.message); }
+});
+
+async function saveProfile() {
+  const full_name = document.getElementById("profName").value.trim();
+  const phone     = document.getElementById("profPhone").value.trim();
+  const bio       = document.getElementById("profBio").value.trim();
+  try {
+    await UserAPI.updateMe({ full_name, phone, bio });
+    showAlert("profileAlert","✅ Profile updated successfully!","success");
+  } catch (err) { showAlert("profileAlert", err.message); }
+}
+
+async function uploadAvatar() {
+  const file = document.getElementById("avatarInput").files[0];
+  if (!file) return;
+  const form = new FormData();
+  form.append("image", file);
+  try {
+    const user = await UserAPI.uploadAvatar(form);
+    const img  = document.getElementById("avatarImg");
+    img.src = imageUrl(user.profile_image);
+    img.style.display = "block";
+    document.getElementById("avatarPlaceholder").style.display = "none";
+    showAlert("profileAlert","✅ Photo updated!","success");
+  } catch (err) { showAlert("profileAlert", err.message); }
+}
+</script>
+</body>
+</html>

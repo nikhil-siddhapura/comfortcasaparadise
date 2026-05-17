@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rooms & Suites — Royal Resort</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<nav class="navbar">
+  <div class="logo">Royal<span>Resort</span></div>
+  <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html" class="active">Rooms</a></li>
+    <li><a href="booking.html">Book Now</a></li>
+    <li id="navGuest"><a href="login.html" class="btn btn-accent btn-sm">Login</a></li>
+    <li id="navUser" class="hidden"><a href="profile.html">👤 Profile</a></li>
+    <li id="navLogout" class="hidden"><a href="#" onclick="clearAuth();window.location.href='index.html'">Logout</a></li>
+  </ul>
+</nav>
+<div class="container" style="padding:50px 20px">
+  <div class="section-header">
+    <h2>All Rooms & Suites</h2>
+    <p>Find the perfect accommodation for your stay</p>
+    <div class="divider"></div>
+  </div>
+  <div id="filterBar" class="d-flex gap-1 mb-2" style="flex-wrap:wrap;justify-content:center"></div>
+  <div class="card-grid" id="productGrid"><div class="spinner"></div></div>
+</div>
+<footer class="footer" style="margin-top:60px">
+  <div class="container">
+    <div class="footer-bottom"><p>© 2025 Royal Resort. All rights reserved.</p></div>
+  </div>
+</footer>
+<script src="js/api.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", async () => {
+  if (isLoggedIn()) {
+    document.getElementById("navGuest")?.classList.add("hidden");
+    document.getElementById("navUser")?.classList.remove("hidden");
+    document.getElementById("navLogout")?.classList.remove("hidden");
+  }
+  const cats = await CategoryAPI.getAll();
+  document.getElementById("filterBar").innerHTML =
+    `<button class="btn btn-primary btn-sm" onclick="load(null)">All</button>` +
+    cats.map(c => `<button class="btn btn-outline btn-sm" onclick="load(${c.id})">${c.name}</button>`).join("");
+  await load(null);
+});
+
+async function load(catId) {
+  showSpinner("productGrid");
+  const emojis = ["🛏️","🏨","🌊","🌿","🏖️"];
+  try {
+    const products = await ProductAPI.getAll(catId);
+    const grid = document.getElementById("productGrid");
+    if (!products.length) { grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--muted)">No rooms found.</p>`; return; }
+    grid.innerHTML = products.map((p,i) => `
+      <div class="card">
+        ${p.image
+          ? `<img src="${imageUrl(p.image)}" class="card-img" alt="${p.name}" onerror="this.nextElementSibling.style.display='flex';this.style.display='none'"/>
+             <div class="card-img-placeholder" style="background:#1a5276;display:none">${emojis[i%5]}</div>`
+          : `<div class="card-img-placeholder" style="background:#1a5276">${emojis[i%5]}</div>`}
+        <div class="card-body">
+          <div class="card-title">${p.name}</div>
+          <div class="card-text">${p.description || ""}</div>
+          <div class="card-price">${formatCurrency(p.price)} <span>/ night</span></div>
+          <div style="font-size:0.82rem;color:var(--muted);margin-bottom:12px">🛏 ${p.available_rooms} of ${p.total_rooms} available</div>
+          <a href="booking.html?product_id=${p.id}" class="btn btn-primary btn-sm btn-block">Book Now</a>
+        </div>
+      </div>`).join("");
+  } catch (err) {
+    document.getElementById("productGrid").innerHTML = `<p style="color:var(--danger)">${err.message}</p>`;
+  }
+}
+</script>
+</body>
+</html>

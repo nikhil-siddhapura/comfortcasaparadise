@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Royal Resort — Luxury Stays</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="logo">Royal<span>Resort</span></div>
+  <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="products.html">Rooms</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li id="navGuest"><a href="login.html" class="btn btn-accent btn-sm">Login / Register</a></li>
+    <li id="navUser" class="hidden"><a href="profile.html">👤 My Profile</a></li>
+    <li id="navLogout" class="hidden">
+      <a href="#" class="btn btn-outline btn-sm" onclick="clearAuth();window.location.reload()">Logout</a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Welcome to <span>Royal Resort</span></h1>
+    <p>Experience luxury, comfort and world-class hospitality on the shores of paradise</p>
+    <div class="hero-buttons">
+      <a href="products.html" class="btn btn-accent">🛏️ Explore Rooms</a>
+      <a href="booking.html"  class="btn btn-outline">📅 Book Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- Features strip -->
+<div class="features-strip">
+  <div class="container">
+    <div class="features-grid">
+      <div class="feature-item"><div class="icon">🌊</div><h4>Beach Front</h4><p>Direct beach access</p></div>
+      <div class="feature-item"><div class="icon">🍽️</div><h4>Fine Dining</h4><p>World-class cuisine</p></div>
+      <div class="feature-item"><div class="icon">💆</div><h4>Luxury Spa</h4><p>Relax & rejuvenate</p></div>
+      <div class="feature-item"><div class="icon">🏊</div><h4>Infinity Pool</h4><p>Ocean-view pool</p></div>
+      <div class="feature-item"><div class="icon">🔒</div><h4>24/7 Security</h4><p>Safe & secure stay</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Categories -->
+<section class="section" id="categories">
+  <div class="container">
+    <div class="section-header">
+      <h2>Our Categories</h2>
+      <p>Choose from our premium room types and grand facilities</p>
+      <div class="divider"></div>
+    </div>
+    <div class="card-grid" id="categoryGrid"><div class="spinner"></div></div>
+  </div>
+</section>
+
+<!-- Rooms -->
+<section class="section section-alt" id="rooms">
+  <div class="container">
+    <div class="section-header">
+      <h2 id="productsHeading">All Rooms & Suites</h2>
+      <p>Handpicked accommodations for an unforgettable stay</p>
+      <div class="divider"></div>
+    </div>
+    <div id="filterBar" class="d-flex gap-1 mb-2" style="flex-wrap:wrap;justify-content:center"></div>
+    <div class="card-grid" id="productGrid"><div class="spinner"></div></div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="section-header">
+      <h2>Additional Services</h2>
+      <p>Enhance your stay with our premium add-ons</p>
+      <div class="divider"></div>
+    </div>
+    <div class="card-grid" id="serviceGrid"><div class="spinner"></div></div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="section section-alt" id="reviews">
+  <div class="container">
+    <div class="section-header">
+      <h2>Guest Reviews</h2>
+      <p>What our guests say about their experience</p>
+      <div class="divider"></div>
+    </div>
+    <div class="card-grid" id="feedbackGrid"><div class="spinner"></div></div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="section" id="contact">
+  <div class="container" style="max-width:620px">
+    <div class="section-header">
+      <h2>Contact Us</h2>
+      <p>Have a question? We'd love to hear from you.</p>
+      <div class="divider"></div>
+    </div>
+    <div id="contactAlert"></div>
+    <div style="background:white;padding:35px;border-radius:12px;box-shadow:var(--shadow)">
+      <div class="form-row">
+        <div class="form-group"><label>Your Name</label><input type="text" class="form-control" id="cName" placeholder="John Doe"/></div>
+        <div class="form-group"><label>Email</label><input type="email" class="form-control" id="cEmail" placeholder="you@email.com"/></div>
+      </div>
+      <div class="form-group"><label>Subject</label><input type="text" class="form-control" id="cSubject" placeholder="Booking inquiry..."/></div>
+      <div class="form-group"><label>Message</label><textarea class="form-control" id="cMessage" rows="5" placeholder="Your message..."></textarea></div>
+      <button class="btn btn-primary btn-block" onclick="sendContact()">📨 Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Royal Resort</h4>
+        <p>A luxury beachfront destination offering world-class rooms, banquet halls, spa services, and exclusive experiences.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">🏠 Home</a></li>
+          <li><a href="products.html">🛏️ Rooms</a></li>
+          <li><a href="booking.html">📅 Book Now</a></li>
+          <li><a href="login.html">🔐 Login</a></li>
+          <li><a href="#contact">✉️ Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Info</h4>
+        <p>📍 123 Beach Road, Goa, India - 403001</p>
+        <p>📞 +91 98765 43210</p>
+        <p>✉️ info@royalresort.com</p>
+        <p>🕐 24/7 Front Desk</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Royal Resort. All rights reserved. | Crafted with ❤️ for luxury stays.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

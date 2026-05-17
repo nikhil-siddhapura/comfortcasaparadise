@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book a Room — Royal Resort</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<nav class="navbar">
+  <div class="logo">Royal<span>Resort</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Rooms</a></li>
+    <li><a href="profile.html">My Profile</a></li>
+    <li><a href="#" onclick="clearAuth();window.location.href='index.html'">Logout</a></li>
+  </ul>
+</nav>
+<div class="container" style="max-width:750px;padding:40px 20px">
+  <h2 style="color:var(--primary);margin-bottom:5px">📅 Book Your Stay</h2>
+  <p style="color:var(--muted);margin-bottom:25px">Fill in the details below to reserve your room.</p>
+  <div id="bookAlert"></div>
+  <div style="background:white;padding:30px;border-radius:var(--radius);box-shadow:var(--shadow)">
+    <div id="roomInfo" style="background:var(--light);padding:14px;border-radius:8px;margin-bottom:20px;font-size:0.92rem">Select a room to see details.</div>
+    <div class="form-group">
+      <label>Select Room *</label>
+      <select class="form-control" id="productSelect" onchange="onProductChange()"><option value="">-- Choose a room --</option></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Check-in Date *</label><input type="date" class="form-control" id="checkIn" onchange="calcPrice()"/></div>
+      <div class="form-group"><label>Check-out Date *</label><input type="date" class="form-control" id="checkOut" onchange="calcPrice()"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Adults * (min 1)</label><input type="number" class="form-control" id="adults" value="2" min="1" onchange="validatePersons()"/></div>
+      <div class="form-group"><label>Children</label><input type="number" class="form-control" id="children" value="1" min="0" onchange="validatePersons()"/></div>
+    </div>
+    <div id="personsWarning" class="alert alert-error hidden">⚠️ Minimum 3 persons required (adults + children).</div>
+    <div class="form-group">
+      <label>Extra Services (optional)</label>
+      <div id="servicesList" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
+    </div>
+    <div id="priceSummary" style="background:var(--light);padding:15px;border-radius:8px;margin-bottom:20px;min-height:20px"></div>
+    <button class="btn btn-primary btn-block" onclick="submitBooking()">✅ Confirm Booking</button>
+  </div>
+  <div style="margin-top:40px">
+    <h3 style="color:var(--primary);margin-bottom:15px">My Bookings</h3>
+    <div id="myBookings"><div class="spinner"></div></div>
+  </div>
+</div>
+<!-- Feedback Modal -->
+<div class="modal-overlay hidden" id="feedbackModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeFeedback()">×</button>
+    <div class="modal-title">⭐ Leave a Review</div>
+    <div id="feedbackAlert"></div>
+    <div class="form-group"><label>Rating (1–5)</label><input type="number" class="form-control" id="fbRating" min="1" max="5" value="5"/></div>
+    <div class="form-group"><label>Comment</label><textarea class="form-control" id="fbComment" rows="4" placeholder="Share your experience..."></textarea></div>
+    <input type="hidden" id="fbBookingId"/>
+    <button class="btn btn-primary btn-block" onclick="submitFeedback()">Submit Review</button>
+  </div>
+</div>
+<script src="js/api.js"></script>
+<script src="js/booking.js"></script>
+</body>
+</html>
