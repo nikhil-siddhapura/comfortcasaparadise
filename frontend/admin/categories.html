@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Categories — Admin</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/admin.css"/>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🏨 <span>Royal Resort</span></div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"><span class="icon">📊</span><span>Dashboard</span></a>
+      <a href="categories.html" class="active"><span class="icon">🏷️</span><span>Categories</span></a>
+      <a href="products.html"><span class="icon">🛏️</span><span>Products</span></a>
+      <a href="bookings.html"><span class="icon">📅</span><span>Bookings</span></a>
+      <a href="users.html"><span class="icon">👥</span><span>Users</span></a>
+      <a href="contacts.html"><span class="icon">✉️</span><span>Messages</span></a>
+      <a href="services.html"><span class="icon">✨</span><span>Services</span></a>
+    </nav>
+    <div class="sidebar-footer"><a href="../login.html" onclick="clearAuth()"><span class="icon">🚪</span><span>Logout</span></a></div>
+  </aside>
+  <main class="admin-main">
+    <div class="admin-topbar"><h1>🏷️ Category Management</h1></div>
+    <div class="admin-content">
+
+      <!-- ADD -->
+      <div class="admin-card">
+        <div class="admin-card-header"><h3>➕ Add New Category</h3></div>
+        <div class="admin-card-body">
+          <div id="catAlert"></div>
+          <div class="form-row">
+            <div class="form-group"><label>Name *</label><input type="text" class="form-control" id="catName" placeholder="e.g. Deluxe Room"/></div>
+            <div class="form-group"><label>Price (₹) *</label><input type="number" class="form-control" id="catPrice" placeholder="4999"/></div>
+          </div>
+          <div class="form-group"><label>Description</label><textarea class="form-control" id="catDesc" rows="2" placeholder="Brief description..."></textarea></div>
+          <div class="form-group"><label>Image (optional)</label><input type="file" class="form-control" id="catImage" accept="image/*"/></div>
+          <button class="btn btn-primary" onclick="addCategory()">➕ Add Category</button>
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div class="admin-card">
+        <div class="admin-card-header"><h3>All Categories</h3></div>
+        <div class="admin-card-body"><div id="catTable"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay hidden" id="editModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEdit()">×</button>
+    <div class="modal-title">✏️ Edit Category</div>
+    <div id="editAlert"></div>
+    <div class="form-group"><label>Name *</label><input type="text" class="form-control" id="editName"/></div>
+    <div class="form-group"><label>Description</label><textarea class="form-control" id="editDesc" rows="2"></textarea></div>
+    <div class="form-group"><label>Price (₹) *</label><input type="number" class="form-control" id="editPrice"/></div>
+    <div class="form-group"><label>Status</label>
+      <select class="form-control" id="editStatus">
+        <option value="true">✅ Active</option>
+        <option value="false">❌ Inactive</option>
+      </select>
+    </div>
+    <hr style="margin:15px 0;border-color:#eee"/>
+    <div class="form-group"><label>🖼️ Update Image (optional)</label><input type="file" class="form-control" id="editImage" accept="image/*"/></div>
+    <input type="hidden" id="editId"/>
+    <button class="btn btn-primary btn-block" onclick="saveEdit()">💾 Save Changes</button>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", async () => {
+  if (!isAdmin()) { window.location.href = "../login.html"; return; }
+  await loadCategories();
+});
+
+async function loadCategories() {
+  try {
+    const cats = await CategoryAPI.getAllAdmin();          // admin/all endpoint
+    const el   = document.getElementById("catTable");
+    if (!cats.length) { el.innerHTML = `<p style="color:var(--muted)">No categories yet.</p>`; return; }
+    el.innerHTML = `<div class="table-wrap"><table>
+      <thead><tr><th>ID</th><th>Image</th><th>Name</th><th>Description</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>${cats.map(c => `
+        <tr>
+          <td>#${c.id}</td>
+          <td>${c.image
+            ? `<img src="${imageUrl(c.image)}" style="width:55px;height:42px;object-fit:cover;border-radius:4px"/>`
+            : `<div style="width:55px;height:42px;background:#eee;border-radius:4px;display:flex;align-items:center;justify-content:center">🏨</div>`}</td>
+          <td><strong>${c.name}</strong></td>
+          <td style="max-width:200px;color:var(--muted);font-size:0.88rem">${c.description||"—"}</td>
+          <td>${formatCurrency(c.price)}</td>
+          <td><span class="badge ${c.is_active?'badge-approved':'badge-rejected'}">${c.is_active?'Active':'Inactive'}</span></td>
+          <td style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-sm btn-outline"
+              onclick="openEdit(${c.id},'${c.name.replace(/'/g,"\\'")}','${(c.description||'').replace(/'/g,"\\'")}',${c.price},${c.is_active})">
+              ✏️ Edit
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deleteCat(${c.id})">🗑️ Delete</button>
+          </td>
+        </tr>`).join("")}
+      </tbody></table></div>`;
+  } catch (err) { document.getElementById("catTable").innerHTML = `<p style="color:var(--danger)">${err.message}</p>`; }
+}
+
+async function addCategory() {
+  const name  = document.getElementById("catName").value.trim();
+  const price = parseFloat(document.getElementById("catPrice").value);
+  const desc  = document.getElementById("catDesc").value.trim();
+  const file  = document.getElementById("catImage").files[0];
+  if (!name || !price) { showAlert("catAlert","Name and price are required."); return; }
+  const form = new FormData();
+  form.append("name", name); form.append("price", price); form.append("description", desc||"");
+  if (file) form.append("image", file);
+  try {
+    await CategoryAPI.create(form);
+    showAlert("catAlert","✅ Category added!","success");
+    ["catName","catPrice","catDesc"].forEach(id => document.getElementById(id).value="");
+    document.getElementById("catImage").value="";
+    await loadCategories();
+  } catch(err) { showAlert("catAlert",err.message); }
+}
+
+function openEdit(id, name, desc, price, isActive) {
+  document.getElementById("editId").value     = id;
+  document.getElementById("editName").value   = name;
+  document.getElementById("editDesc").value   = desc;
+  document.getElementById("editPrice").value  = price;
+  document.getElementById("editStatus").value = isActive?"true":"false";
+  document.getElementById("editImage").value  = "";
+  document.getElementById("editAlert").innerHTML = "";
+  document.getElementById("editModal").classList.remove("hidden");
+}
+function closeEdit() { document.getElementById("editModal").classList.add("hidden"); }
+
+async function saveEdit() {
+  const id        = document.getElementById("editId").value;
+  const name      = document.getElementById("editName").value.trim();
+  const desc      = document.getElementById("editDesc").value.trim();
+  const price     = parseFloat(document.getElementById("editPrice").value);
+  const is_active = document.getElementById("editStatus").value === "true";
+  const file      = document.getElementById("editImage").files[0];
+  if (!name || !price) { showAlert("editAlert","Name and price are required."); return; }
+  try {
+    await CategoryAPI.update(id, { name, description:desc, price, is_active });
+    // If new image selected, upload it
+    if (file) {
+      const form = new FormData();
+      form.append("image", file);
+      await CategoryAPI.updateImage(id, form);
+    }
+    showAlert("editAlert","✅ Category updated!","success");
+    setTimeout(()=>{ closeEdit(); loadCategories(); }, 900);
+  } catch(err) { showAlert("editAlert",err.message); }
+}
+
+async function deleteCat(id) {
+  if (!confirm("Delete this category? All products inside will also be deleted.")) return;
+  try { await CategoryAPI.delete(id); await loadCategories(); }
+  catch(err) { alert(err.message); }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Bookings — Admin</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/admin.css"/>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🏨 <span>Royal Resort</span></div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"><span class="icon">📊</span><span>Dashboard</span></a>
+      <a href="categories.html"><span class="icon">🏷️</span><span>Categories</span></a>
+      <a href="products.html"><span class="icon">🛏️</span><span>Products</span></a>
+      <a href="bookings.html" class="active"><span class="icon">📅</span><span>Bookings</span></a>
+      <a href="users.html"><span class="icon">👥</span><span>Users</span></a>
+      <a href="contacts.html"><span class="icon">✉️</span><span>Messages</span></a>
+      <a href="services.html"><span class="icon">✨</span><span>Services</span></a>
+    </nav>
+    <div class="sidebar-footer"><a href="../login.html" onclick="clearAuth()"><span class="icon">🚪</span><span>Logout</span></a></div>
+  </aside>
+  <main class="admin-main">
+    <div class="admin-topbar"><h1>📅 Booking Management</h1></div>
+    <div class="admin-content">
+
+      <!-- Filter Tabs -->
+      <div class="d-flex gap-1 mb-2" style="flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm"  onclick="filterBookings('all')">All</button>
+        <button class="btn btn-outline btn-sm"   onclick="filterBookings('pending')">⏳ Pending</button>
+        <button class="btn btn-success btn-sm"   onclick="filterBookings('approved')" style="background:var(--success)">✅ Approved</button>
+        <button class="btn btn-danger btn-sm"    onclick="filterBookings('rejected')">❌ Rejected</button>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3 id="tableTitle">All Bookings</h3>
+        </div>
+        <div class="admin-card-body">
+          <div id="bookingAlert"></div>
+          <div id="bookingsTable"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- STATUS MODAL -->
+<div class="modal-overlay hidden" id="statusModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-title">📋 Update Booking Status</div>
+    <div id="bookingInfo" style="background:var(--light);padding:12px;border-radius:8px;margin-bottom:16px;font-size:0.88rem;color:var(--muted)"></div>
+    <div class="form-group">
+      <label>Status *</label>
+      <select class="form-control" id="statusSelect">
+        <option value="approved">✅ Approve</option>
+        <option value="rejected">❌ Reject</option>
+        <option value="pending">⏳ Set Pending</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Message to User (optional)</label>
+      <textarea class="form-control" id="adminMsg" rows="3"
+        placeholder="e.g. Your booking is confirmed! Check-in at 2 PM."></textarea>
+    </div>
+    <input type="hidden" id="activeBookingId"/>
+    <button class="btn btn-primary btn-block" onclick="saveStatus()">💾 Save Status</button>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script>
+let allBookings = [];
+
+window.addEventListener("DOMContentLoaded", async () => {
+  if (!isAdmin()) { window.location.href = "../login.html"; return; }
+  await loadBookings();
+});
+
+async function loadBookings() {
+  try {
+    allBookings = await BookingAPI.allBookings();
+    renderBookings(allBookings, "All Bookings");
+  } catch (err) {
+    document.getElementById("bookingsTable").innerHTML = `<p style="color:var(--danger)">${err.message}</p>`;
+  }
+}
+
+function filterBookings(status) {
+  if (status === "all") {
+    renderBookings(allBookings, "All Bookings");
+  } else {
+    const filtered = allBookings.filter(b => b.status === status);
+    renderBookings(filtered, `${status.charAt(0).toUpperCase()+status.slice(1)} Bookings`);
+  }
+}
+
+function renderBookings(bookings, title) {
+  document.getElementById("tableTitle").textContent = title;
+  const el = document.getElementById("bookingsTable");
+  if (!bookings.length) { el.innerHTML = `<p style="color:var(--muted);padding:10px">No bookings found.</p>`; return; }
+  el.innerHTML = `<div class="table-wrap"><table>
+    <thead>
+      <tr><th>ID</th><th>User</th><th>Room</th><th>Check-in</th><th>Check-out</th>
+          <th>Persons</th><th>Total</th><th>Status</th><th>Message</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      ${bookings.map(b => `
+        <tr>
+          <td>#${b.id}</td>
+          <td>User #${b.user_id}</td>
+          <td>Room #${b.product_id}</td>
+          <td>${formatDate(b.check_in)}</td>
+          <td>${formatDate(b.check_out)}</td>
+          <td>${b.adults + b.children}</td>
+          <td>${formatCurrency(b.total_price)}</td>
+          <td><span class="badge badge-${b.status}">${b.status}</span></td>
+          <td style="max-width:150px;font-size:0.82rem;color:var(--muted)">${b.admin_message || "—"}</td>
+          <td>
+            <button class="btn btn-sm btn-primary"
+              onclick="openModal(${b.id},'${b.status}',${b.user_id},${b.product_id})">
+              ✏️ Update
+            </button>
+          </td>
+        </tr>`).join("")}
+    </tbody>
+  </table></div>`;
+}
+
+function openModal(id, status, userId, productId) {
+  document.getElementById("activeBookingId").value = id;
+  document.getElementById("statusSelect").value    = status;
+  document.getElementById("adminMsg").value        = "";
+  document.getElementById("bookingInfo").innerHTML =
+    `Booking #${id} &nbsp;|&nbsp; User #${userId} &nbsp;|&nbsp; Room #${productId}`;
+  document.getElementById("statusModal").classList.remove("hidden");
+}
+function closeModal() { document.getElementById("statusModal").classList.add("hidden"); }
+
+async function saveStatus() {
+  const id            = document.getElementById("activeBookingId").value;
+  const status        = document.getElementById("statusSelect").value;
+  const admin_message = document.getElementById("adminMsg").value.trim();
+  try {
+    await BookingAPI.updateStatus(id, { status, admin_message });
+    showAlert("bookingAlert", `✅ Booking #${id} marked as <strong>${status}</strong>`, "success");
+    closeModal();
+    await loadBookings();
+  } catch (err) { showAlert("bookingAlert", err.message); }
+}
+</script>
+</body>
+</html>

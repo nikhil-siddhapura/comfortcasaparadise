@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register — Royal Resort</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/auth.css"/>
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="icon">✨</div>
+      <h2>Create Account</h2>
+      <p>Join Royal Resort today</p>
+    </div>
+    <div id="regAlert"></div>
+    <div class="form-group"><label>Full Name *</label><input type="text" class="form-control" id="regName" placeholder="John Doe"/></div>
+    <div class="form-group"><label>Email Address *</label><input type="email" class="form-control" id="regEmail" placeholder="you@email.com"/></div>
+    <div class="form-group"><label>Phone Number</label><input type="tel" class="form-control" id="regPhone" placeholder="+91 98765 43210"/></div>
+    <div class="form-group"><label>Password * (min 6 chars)</label><input type="password" class="form-control" id="regPass" placeholder="••••••••"/></div>
+    <div class="form-group"><label>Confirm Password *</label><input type="password" class="form-control" id="regPassConfirm" placeholder="••••••••"/></div>
+    <button class="btn btn-primary btn-block" onclick="registerUser()">Create Account</button>
+    <div class="auth-footer mt-2">Already have an account? <a href="login.html">Login here</a></div>
+  </div>
+</div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>
