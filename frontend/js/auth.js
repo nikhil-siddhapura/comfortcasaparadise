@@ -67,13 +67,7 @@ async function registerUser() {
     return;
   }
   try {
-    // await AuthAPI.register({ full_name, email, phone, password });
-    await AuthAPI.register({
-      full_name,
-      email,
-      phone: phone || null,
-      password,
-    });
+    await AuthAPI.register({ full_name, email, phone, password });
     showAlert(
       "regAlert",
       "✅ Account created! Redirecting to login...",

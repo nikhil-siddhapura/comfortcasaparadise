@@ -34,15 +34,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve uploaded images as static files at /uploads/...
+# 1. માઉન્ટિંગ સેટિંગ્સ (સ્ટાટીક ફાઇલો માટે)
 os.makedirs("uploads", exist_ok=True)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+# આખી ફ્રન્ટએન્ડ ડિરેક્ટરી માઉન્ટ કરી દઈએ જેથી css, js, images બધું એકસાથે લોડ થઈ જાય
 app.mount("/css", StaticFiles(directory="../frontend/css"), name="css")
 app.mount("/js", StaticFiles(directory="../frontend/js"), name="js")
 
-# app.mount("/frontend", StaticFiles(directory="../frontend"), name="frontend")
-
-# Register all routers
+# 2. રજીસ્ટર ઓલ રાઉટર્સ (API Endpoints)
 app.include_router(auth.router)
 app.include_router(categories.router)
 app.include_router(products.router)
@@ -53,7 +53,7 @@ app.include_router(services.router)
 app.include_router(users.router)
 
 
-# Frontend pages BAAD MEIN
+# 3. ફ્રન્ટએન્ડ પેજીસના રાઉટ્સ
 @app.get("/")
 def root():
     return FileResponse("../frontend/index.html")
@@ -89,6 +89,7 @@ def forgot_page():
     return FileResponse("../frontend/forgot-password.html")
 
 
+# એડમિન પેજીસના રાઉટ્સ
 @app.get("/admin/dashboard.html")
 def admin_dashboard():
     return FileResponse("../frontend/admin/dashboard.html")
