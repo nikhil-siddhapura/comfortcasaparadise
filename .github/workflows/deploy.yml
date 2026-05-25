@@ -1,6 +1,5 @@
 name: Deploy Website to Ubuntu Server
 
-# આ પ્રોસેસ ત્યારે જ ચાલશે જ્યારે 'main' બ્રાન્ચમાં push અથવા pull_request merge થશે
 on:
   push:
     branches:
@@ -11,34 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ૧. ગિટહબમાંથી કોડ ચેકઆઉટ કરશે
       - name: Checkout Repository Code
         uses: actions/checkout@v4
 
-      # ૨. SSH દ્વારા તમારા Ubuntu સર્વર સાથે કનેક્ટ થશે અને કમાન્ડ રન કરશે
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          # જો Private Key વાપરતા હોવ તો તેને 'key' માં આપવી, 'password' માં નહીં:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: "2204"
           script: |
-            # તમારા સર્વર પર જ્યાં વેબસાઈટનો અસલી કોડ પડ્યો છે તે પાથ:
-            cd /home/ubuntu/comfortcasaparadise
-
-            # સર્વર પર ગિટનો કોડ લેટેસ્ટ અપડેટ કરો
+            # Navigate to the project directory on the server
+            cd /var/www/comfortcasaparadise
+            
+            # Update the code from GitHub (Make sure git is configured on the server)
             git pull origin main
-
-            # પાયથોન (Python) પ્રોજેક્ટ માટેના કમાન્ડ્સ:
-            # જો virtual environment વાપરતા હોવ તો તેને activate કરો (તમારા venv ના પાથ મુજબ ફેરફાર કરો)
-            # source venv/bin/activate
-
-            # requirements.txt માંથી પેકેજ ઇન્સ્ટોલ કરો
-            # pip install -r requirements.txt
-
-            # જો કોઈ સર્વિસ (જેમ કે gunicorn, uvicorn કે systemd) રિસ્ટાર્ટ કરવાની જરૂર હોય (તમારા પ્રોજેક્ટ મુજબ નામ આપો)
-            sudo systemctl restart comfortcasa
-
-            # echo "Deployment successful!"
+            
+            # Navigate to the backend directory
+            cd backend
+            
+            # Activate the virtual environment (assuming it's in the root or backend folder)
+            # If your venv is in the backend folder:
+            source venv/bin/activate || source ../venv/bin/activate || echo "No venv found, skipping activation"
+            
+            # Install backend dependencies
+            pip install -r requirements.txt
+            
+            # Restart the service
+            sudo systemctl restart comfortcasa.services
