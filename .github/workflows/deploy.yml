@@ -39,6 +39,6 @@ jobs:
             # pip install -r requirements.txt
 
             # જો કોઈ સર્વિસ (જેમ કે gunicorn, uvicorn કે systemd) રિસ્ટાર્ટ કરવાની જરૂર હોય (તમારા પ્રોજેક્ટ મુજબ નામ આપો)
-            # sudo systemctl restart your_python_service_name
+            sudo systemctl restart comfortcasa
 
-            echo "Deployment successful!"
+            # echo "Deployment successful!"
