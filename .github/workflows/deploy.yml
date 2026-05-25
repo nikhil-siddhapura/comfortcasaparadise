@@ -24,20 +24,26 @@ jobs:
           port: "2204"
           envs: SUDO_PASSWORD
           script: |
-            # Navigate to the CORRECT project directory on the server
+            set -e  # જો કોઈ એરર આવે તો સ્ક્રિપ્ટ અટકાવી દેશે (જેથી લાલ ચોકડી દેખાય)
+            
+            # સર્વરના સાચા ફોલ્ડરમાં જાવ
             cd /home/ubuntu/comfortcasaparadise
             
-            # Update the code from GitHub
+            # સર્વર પરના જૂના ફેરફારો જબરદસ્તી કાઢી નાખો 
+            git reset --hard HEAD
+            git clean -fd
+            
+            # નવો કોડ ગિટહબ પરથી ડાઉનલોડ કરો
             git pull origin main
             
-            # Navigate to the backend directory
+            # બેકએન્ડ ફોલ્ડરમાં જાવ
             cd backend
             
-            # Activate the virtual environment
-            source venv/bin/activate || source ../venv/bin/activate || echo "No venv found, skipping activation"
+            # વર્ચ્યુઅલ એન્વાયર્નમેન્ટ (venv) ચાલુ કરો
+            source venv/bin/activate || source ../venv/bin/activate || echo "No venv found"
             
-            # Install backend dependencies
+            # લાયબ્રેરી ઇન્સ્ટોલ કરો
             pip install -r requirements.txt
             
-            # Restart the service by providing the sudo password automatically
+            # સર્વર રીસ્ટાર્ટ કરો
             echo "$SUDO_PASSWORD" | sudo -S systemctl restart comfortcasa
