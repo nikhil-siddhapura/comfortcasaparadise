@@ -31,7 +31,6 @@ jobs:
             git pull origin main
 
             # જો તમારી વેબસાઈટ Node.js કે Laravel માં હોય, તો નીચેના કમાન્ડ વાપરી શકો (નહીં તો આ લાઈન્સ કાઢી નાખવી)
-            # npm install
-            # npm run build
+
 
             echo "Deployment successful!"
