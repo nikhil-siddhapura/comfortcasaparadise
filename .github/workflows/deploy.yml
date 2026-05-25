@@ -21,7 +21,8 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          # જો Private Key વાપરતા હોવ તો તેને 'key' માં આપવી, 'password' માં નહીં:
+          key: ${{ secrets.SERVER_SSH_KEY }}
           port: "2204"
           script: |
             # તમારા સર્વર પર જ્યાં વેબસાઈટનો કોડ પડ્યો છે તે ફોલ્ડરના પાથ પર જાઓ
@@ -30,7 +31,14 @@ jobs:
             # સર્વર પર ગિટનો કોડ લેટેસ્ટ અપડેટ કરો
             git pull origin main
 
-            # જો તમારી વેબસાઈટ Node.js કે Laravel માં હોય, તો નીચેના કમાન્ડ વાપરી શકો (નહીં તો આ લાઈન્સ કાઢી નાખવી)
+            # પાયથોન (Python) પ્રોજેક્ટ માટેના કમાન્ડ્સ:
+            # જો virtual environment વાપરતા હોવ તો તેને activate કરો (તમારા venv ના પાથ મુજબ ફેરફાર કરો)
+            # source venv/bin/activate
 
+            # requirements.txt માંથી પેકેજ ઇન્સ્ટોલ કરો
+            # pip install -r requirements.txt
+
+            # જો કોઈ સર્વિસ (જેમ કે gunicorn, uvicorn કે systemd) રિસ્ટાર્ટ કરવાની જરૂર હોય (તમારા પ્રોજેક્ટ મુજબ નામ આપો)
+            # sudo systemctl restart your_python_service_name
 
             echo "Deployment successful!"
