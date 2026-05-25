@@ -25,8 +25,8 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: "2204"
           script: |
-            # તમારા સર્વર પર જ્યાં વેબસાઈટનો કોડ પડ્યો છે તે ફોલ્ડરના પાથ પર જાઓ
-            cd /var/www/comfortcasaparadise
+            # તમારા સર્વર પર જ્યાં વેબસાઈટનો અસલી કોડ પડ્યો છે તે પાથ:
+            cd /home/ubuntu/comfortcasaparadise
 
             # સર્વર પર ગિટનો કોડ લેટેસ્ટ અપડેટ કરો
             git pull origin main
