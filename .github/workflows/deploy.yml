@@ -25,7 +25,7 @@ jobs:
           envs: SUDO_PASSWORD
           script: |
             # Navigate to the project directory on the server
-            cd /var/www/comfortcasaparadise
+            cd /home/ubuntu/comfortcasaparadise
             
             # Update the code from GitHub (Make sure git is configured on the server)
             git pull origin main
