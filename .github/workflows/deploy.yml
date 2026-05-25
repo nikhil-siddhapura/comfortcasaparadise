@@ -40,4 +40,4 @@ jobs:
             pip install -r requirements.txt
             
             # Restart the service by providing the sudo password automatically
-            echo "$SUDO_PASSWORD" | sudo -S systemctl restart comfortcasa.services
+            echo "$SUDO_PASSWORD" | sudo -S systemctl restart comfortcasa
