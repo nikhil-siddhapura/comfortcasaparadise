@@ -27,7 +27,7 @@ jobs:
             set -e  # જો કોઈ એરર આવે તો સ્ક્રિપ્ટ અટકાવી દેશે (જેથી લાલ ચોકડી દેખાય)
             
             # સર્વરના સાચા ફોલ્ડરમાં જાવ
-            cd /home/ubuntu/comfortcasaparadise
+            cd /var/www/comfortcasaparadise
             
             # સર્વર પરના જૂના ફેરફારો જબરદસ્તી કાઢી નાખો 
             git reset --hard HEAD
